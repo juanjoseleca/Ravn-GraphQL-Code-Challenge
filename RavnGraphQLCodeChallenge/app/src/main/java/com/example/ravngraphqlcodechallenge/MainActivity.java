@@ -26,11 +26,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         EditText search_editText = (EditText) findViewById(R.id.search_editText);
+
         search_editText.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
                 //If the keyevent is a key-down event on the "enter" button
+
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-                    MyApolloClient.getMyApolloClient().query(MiRepoQuery.builder().build()).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
+                    String content = search_editText.getText().toString();
+                    Log.d("respuesta:",content);
+                    MyApolloClient.getMyApolloClient().query(MiRepoQuery.builder().midato(content).build()).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<MiRepoQuery.Data> response) {
 
