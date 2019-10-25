@@ -1,0 +1,12 @@
+query miRepo{
+    repositoryOwner(login:"juanjoseleca")
+    {
+        repositories(first:10)
+        {
+            nodes{
+                name
+            }
+
+        }
+    }
+}
