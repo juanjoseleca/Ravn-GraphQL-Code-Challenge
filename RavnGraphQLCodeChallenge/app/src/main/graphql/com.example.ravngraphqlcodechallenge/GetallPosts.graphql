@@ -1,13 +1,20 @@
 query miRepo($midato:String!){
-    repositoryOwner(login:$midato)
-    {
-        repositories(first:10)
+
+        repositoryOwner(login:$midato)
         {
-            nodes{
-                name
+            repositories(first:10)
+            {
+                nodes{
+                    name
+                    description
+                    pullRequests
+                    {
+                        totalCount
+                    }
+                }
+
             }
-
         }
-    }
-}
 
+
+}

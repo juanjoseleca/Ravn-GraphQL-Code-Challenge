@@ -12,7 +12,7 @@ public class MyApolloClient {
 
     {
         //authHeader es la clave que utilizamos para el api de Github
-        String authHeader="bb2ca07795f42bb5dbc0384938cd2e9b9b76eda7";
+        String authHeader="bcad06ac618925fe455800f1b885cbd328cf56a8";
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request original = chain.request();

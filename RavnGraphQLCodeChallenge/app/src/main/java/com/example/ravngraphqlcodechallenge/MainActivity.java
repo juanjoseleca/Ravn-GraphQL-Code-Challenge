@@ -21,6 +21,8 @@ import com.apollographql.apollo.exception.ApolloException;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,8 +35,15 @@ public class MainActivity extends AppCompatActivity {
 
         EditText search_editText = (EditText) findViewById(R.id.search_editText); //id del buscador
         ListView listview2=(ListView) findViewById(R.id.list_repositorios); //id del listado
-
+        String[][] datos = {
+                {"name1","description1","count1"},
+                {"name2","description2","count2"}
+        };
         //-------------------------------------------------------
+
+        //listview2.setAdapter(new Adaptador(this,datos));
+
+
 
         search_editText.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
@@ -56,12 +65,48 @@ public class MainActivity extends AppCompatActivity {
                                 public void run() {
                                     //Es necesario ejecutar las siguientes instrucciones en el hilo principal
                                     //para que no exista una sobrecarga
+
                                     ArrayAdapter<String> adapter;
-                                    ArrayList<String> names = new ArrayList<String>();
+                                    List<List<String>> datos = new ArrayList<>();
+                                    List<String> names = new ArrayList<>();
+                                    List<String> descriptions = new ArrayList<>();
+                                    List<String> pr_counts = new ArrayList<>();
+                                    /*
+                                    for(int i=0;i<5;i++)
+                                    {
+                                        Log.d("nombre agregado: ",response.data().repositoryOwner().repositories().nodes().get(i).description());
+                                        names.add(response.data().repositoryOwner().repositories().nodes().get(i).name());
+                                        descriptions.add(response.data().repositoryOwner().repositories().nodes().get(i).description());
+                                        pr_counts.add(String.valueOf(response.data().repositoryOwner().repositories().nodes().get(i).pullRequests().totalCount()));
+                                    }
+                                    Log.d("que paso",String.valueOf(names.size()));
+
+                                     */
+
                                     String t1=response.data().repositoryOwner().repositories().nodes().get(0).name();
-                                    names.add(t1);
-                                    adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, names);
-                                    listview2.setAdapter(adapter);
+                                    Log.d("Tipo de dato:",response.data().repositoryOwner().repositories().nodes().getClass().getName());
+
+
+                                    for(MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes())
+                                    {
+                                        names.add(String.valueOf((String)entrada.name()));
+                                        descriptions.add(String.valueOf((String)entrada.description()) );
+                                        pr_counts.add(String.valueOf(entrada.pullRequests().totalCount()));
+                                        Log.d("elemento:",String.valueOf((String)entrada.description()) );
+                                    }
+
+
+                                    datos.add(names);
+                                    datos.add(descriptions);
+                                    datos.add(pr_counts);
+
+
+
+
+
+                                    //adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, names);
+                                    //listview2.setAdapter(adapter);
+                                    listview2.setAdapter(new Adaptador(MainActivity.this,datos));
                                 }
                             });
 
@@ -71,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NotNull ApolloException e) {
-
+                            Log.d("respuesta:","no regreso nada");
                         }
 
                     });
