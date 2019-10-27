@@ -51,8 +51,6 @@ public class MainActivity extends AppCompatActivity {
 
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     String content = search_editText.getText().toString();
-
-                    Log.d("respuesta:",content);
                     //Realizamos la consulta mediante apollo al api de Github
                     MyApolloClient.getMyApolloClient().query(MiRepoQuery.builder().midato(content).build()).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
                         @Override
@@ -71,21 +69,6 @@ public class MainActivity extends AppCompatActivity {
                                     List<String> names = new ArrayList<>();
                                     List<String> descriptions = new ArrayList<>();
                                     List<String> pr_counts = new ArrayList<>();
-                                    /*
-                                    for(int i=0;i<5;i++)
-                                    {
-                                        Log.d("nombre agregado: ",response.data().repositoryOwner().repositories().nodes().get(i).description());
-                                        names.add(response.data().repositoryOwner().repositories().nodes().get(i).name());
-                                        descriptions.add(response.data().repositoryOwner().repositories().nodes().get(i).description());
-                                        pr_counts.add(String.valueOf(response.data().repositoryOwner().repositories().nodes().get(i).pullRequests().totalCount()));
-                                    }
-                                    Log.d("que paso",String.valueOf(names.size()));
-
-                                     */
-
-                                    String t1=response.data().repositoryOwner().repositories().nodes().get(0).name();
-                                    Log.d("Tipo de dato:",response.data().repositoryOwner().repositories().nodes().getClass().getName());
-
 
                                     for(MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes())
                                     {
@@ -101,12 +84,7 @@ public class MainActivity extends AppCompatActivity {
                                     datos.add(pr_counts);
 
 
-
-
-
-                                    //adapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, names);
-                                    //listview2.setAdapter(adapter);
-                                    listview2.setAdapter(new Adaptador(MainActivity.this,datos));
+                                    listview2.setAdapter(new Adaptador(MainActivity.this,datos,content));
                                 }
                             });
 
@@ -116,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(@NotNull ApolloException e) {
-                            Log.d("respuesta:","no regreso nada");
+                            Log.d("ERROR:","La consulta no ha devuelto informacion");
                         }
 
                     });

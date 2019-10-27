@@ -35,4 +35,5 @@ dependencies {
     implementation 'com.apollographql.apollo:apollo-runtime:1.2.0'
     implementation "com.apollographql.apollo:apollo-android-support:1.2.0"
     implementation 'com.squareup.okhttp3:okhttp:3.0.1'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 }

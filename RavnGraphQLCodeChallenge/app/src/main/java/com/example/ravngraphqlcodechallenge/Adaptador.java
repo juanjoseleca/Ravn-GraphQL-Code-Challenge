@@ -18,12 +18,13 @@ public class Adaptador extends BaseAdapter {
     private static LayoutInflater inflater = null;
     Context contexto;
     List<List<String>> datos;
+    String nombre_usuario;
 
-    public Adaptador(Context contexto, List<List<String>> datos)
+    public Adaptador(Context contexto, List<List<String>> datos, String nombre_usuario)
     {
         this.contexto=contexto;
         this.datos=datos;
-
+        this.nombre_usuario=nombre_usuario;
         inflater = (LayoutInflater) contexto.getSystemService(contexto.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -59,7 +60,10 @@ public class Adaptador extends BaseAdapter {
             @Override
                 public void onClick(View v)
                 {
+                    Log.d("Click","elementos");
                     Intent show_contributors = new Intent(contexto,topcontributors.class);
+                    show_contributors.putExtra("NOMBRE_USUARIO",nombre_usuario );
+                    show_contributors.putExtra("REPOSITORIO",datos.get(0).get(position));
                     contexto.startActivity(show_contributors);
                 }
 

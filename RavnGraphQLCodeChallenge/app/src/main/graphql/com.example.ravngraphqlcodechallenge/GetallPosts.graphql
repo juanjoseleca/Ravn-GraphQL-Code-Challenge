@@ -2,7 +2,7 @@ query miRepo($midato:String!){
 
         repositoryOwner(login:$midato)
         {
-            repositories(first:10)
+            repositories(first:10,ownerAffiliations:OWNER)
             {
                 nodes{
                     name
@@ -17,4 +17,24 @@ query miRepo($midato:String!){
         }
 
 
+}
+query get_collaborators($midato:String!,$repository:String!){
+    repositoryOwner(login:$midato)
+    {
+        repository(name:$repository)
+        {
+            collaborators
+            {
+                nodes
+                {
+
+                    name
+                    location
+                    login
+                    id
+                }
+            }
+        }
+
+    }
 }
