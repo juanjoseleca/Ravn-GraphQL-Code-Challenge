@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".topcontributors"></activity>
+        <activity android:name=".api_key"></activity>
+        <activity android:name=".Cuenta_privada" />
+        <activity android:name=".topcontributors" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

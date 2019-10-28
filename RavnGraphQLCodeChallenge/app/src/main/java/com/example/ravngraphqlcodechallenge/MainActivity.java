@@ -3,6 +3,7 @@ package com.example.ravngraphqlcodechallenge;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -17,6 +18,9 @@ import android.widget.ListView;
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
+import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import android.view.MenuItem;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -44,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
         //listview2.setAdapter(new Adaptador(this,datos));
 
 
+        BottomNavigationView menu_navegacion = findViewById(R.id.navegador_id);
+        menu_navegacion.setOnNavigationItemSelectedListener(navListener);
 
         search_editText.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
@@ -52,12 +58,13 @@ public class MainActivity extends AppCompatActivity {
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     String content = search_editText.getText().toString();
                     //Realizamos la consulta mediante apollo al api de Github
-                    MyApolloClient.getMyApolloClient().query(MiRepoQuery.builder().midato(content).build()).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
+                    MyApolloClient.getMyApolloClient(MainActivity.this).query(MiRepoQuery.builder().midato(content).build()).httpCachePolicy(HttpCachePolicy.NETWORK_FIRST).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<MiRepoQuery.Data> response) {
                         //En caso obtengamos datos en nuestra consulta al api se ejecutara lo siguiente
 
                             //Ejecutamos en el hilo principal
+
                             MainActivity.this.runOnUiThread(new Runnable() {
                                 @Override
                                 public void run() {
@@ -106,7 +113,27 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NotNull MenuItem item) {
 
+
+                    switch (item.getItemId()) {
+                        case R.id.action_search:
+                            Log.d("ACTIVIDAD","Se hizo click en action search");
+                            break;
+                        case R.id.action_key:
+                            Intent abrir_actividad_api_key = new Intent(MainActivity.this,api_key.class);
+                            MainActivity.this.startActivity(abrir_actividad_api_key);
+                            Log.d("ACTIVIDAD","Se hizo click en action key");
+                            break;
+
+                    }
+
+                    return true;
+                }
+            };
 
 }
 

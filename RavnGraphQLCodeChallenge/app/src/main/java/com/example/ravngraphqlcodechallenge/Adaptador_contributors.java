@@ -35,7 +35,7 @@ public class Adaptador_contributors extends BaseAdapter {
         login.setText(datos.get(2).get(position));
 
 
-        Picasso.get().load("https://avatars2.githubusercontent.com/u/4054481?v=4").into(imagen_usuario);
+        Picasso.get().load("https://avatars1.githubusercontent.com/u/8674244?v=4").into(imagen_usuario);
 
         return vista;
     }
