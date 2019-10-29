@@ -9,23 +9,14 @@ To get started with the Android integration, go to [Apollo GraphQL Client for An
 4. GitHub API Key
 
 
-### Installing
+### Architecture
+The application makes the connection with the Github API through Apollo, using GraphQL to obtain the data that it requires (query), then processes the information in the controllers to finally display it in the interface.
 
-A step by step series of examples that tell you how to get a development env running
+<img src="/images/architecture.png" alt="3DPrinter" height="176" width="313" align="middle"> 
 
-Say what the step will be
+## Design
 
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+The main interface consists of a navigation bar, a text editor and a list view where we will show the results obtained. Then we have the interface to save the API key, which consists of a text editor, a save button and a Github image that redirects you to the page where you can generate your API key.
 
 ## Functionalities
 1. Get a user's repositories.
@@ -34,10 +25,11 @@ End with an example of getting some data out of the system or using it for a lit
 4. Set api key.
 
 
-## Running the tests
+## Running the application
 
-Explain how to run the automated tests for this system
-
+```
+Inicialmente
+```
 <img src="/images/1.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/2.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/3.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
@@ -47,23 +39,8 @@ Explain how to run the automated tests for this system
 <img src="/images/7.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 
-### Break down into end to end tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Restriction
+## Restrictions
 
 1. Github API v4 only allows you to see the collaborators of a repository, if it was created by the user who generates the API key.
 2. Its not possible get the URL of each user's avatar, when the query is made the api returns null.
