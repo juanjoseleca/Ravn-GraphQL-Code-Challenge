@@ -1,11 +1,18 @@
 package com.example.ravngraphqlcodechallenge;
 import com.apollographql.apollo.ApolloClient;
 import android.content.Context;
+import android.util.Log;
+
 import com.apollographql.apollo.api.cache.http.HttpCacheStore;
 import okhttp3.internal.cache.CacheInterceptor;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.internal.cache.DiskLruCache;
@@ -19,7 +26,18 @@ public class MyApolloClient {
     public static ApolloClient getMyApolloClient(Context contexto)
     {
         //authHeader es la clave que utilizamos para el api de Github
-        String authHeader="211b701a696ccd81d9051eaac51807f86489a003";
+        String authHeader;
+        String mi_clave= obtener_clave(contexto);
+        if(mi_clave.length()<40)
+        {
+            authHeader="322b701a696ccd81d9051eaac51807f86489a003";
+        }
+        else
+        {
+            Log.d("ACCION","se cambio la clave");
+            authHeader=mi_clave;
+            Log.d("VALOR:",authHeader);
+        }
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(chain -> {
                     Request original = chain.request();
@@ -43,6 +61,34 @@ public class MyApolloClient {
 
         return apolloClient;
 
+    }
+    public static String obtener_clave(Context contexto)
+    {
+        String ret = "";
+        try {
+            InputStream inputStream = contexto.openFileInput("config.txt");
+
+            if ( inputStream != null ) {
+                InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+                BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+                String receiveString = "";
+                StringBuilder stringBuilder = new StringBuilder();
+
+                while ( (receiveString = bufferedReader.readLine()) != null ) {
+                    stringBuilder.append(receiveString);
+                }
+
+                inputStream.close();
+                ret = stringBuilder.toString();
+            }
+        }
+        catch (FileNotFoundException e) {
+            Log.e("login activity", "File not found: " + e.toString());
+        } catch (IOException e) {
+            Log.e("login activity", "Can not read file: " + e.toString());
+        }
+        Log.d("RESULTADO->:",ret);
+        return ret;
     }
 
 }

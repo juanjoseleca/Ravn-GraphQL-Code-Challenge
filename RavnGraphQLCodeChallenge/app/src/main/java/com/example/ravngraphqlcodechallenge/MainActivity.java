@@ -1,31 +1,24 @@
 package com.example.ravngraphqlcodechallenge;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.ListView;
-
 import com.apollographql.apollo.ApolloCall;
 import com.apollographql.apollo.api.Response;
 import com.apollographql.apollo.exception.ApolloException;
 import com.apollographql.apollo.api.cache.http.HttpCachePolicy;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.view.MenuItem;
-
+import android.widget.Toast;
 import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -61,47 +54,64 @@ public class MainActivity extends AppCompatActivity {
                     MyApolloClient.getMyApolloClient(MainActivity.this).query(MiRepoQuery.builder().midato(content).build()).httpCachePolicy(HttpCachePolicy.NETWORK_FIRST).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
                         @Override
                         public void onResponse(@NotNull Response<MiRepoQuery.Data> response) {
-                        //En caso obtengamos datos en nuestra consulta al api se ejecutara lo siguiente
+                            if(response.data().repositoryOwner().repositories().nodes()==null)
+                            {
+                                Toast.makeText(MainActivity.this,"No existe un usuario con dicho nombre",
+                                        Toast.LENGTH_LONG).show();
+                            }
+                            else {
 
-                            //Ejecutamos en el hilo principal
 
-                            MainActivity.this.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //Es necesario ejecutar las siguientes instrucciones en el hilo principal
-                                    //para que no exista una sobrecarga
+                                //En caso obtengamos datos en nuestra consulta al api se ejecutara lo siguiente
 
-                                    ArrayAdapter<String> adapter;
-                                    List<List<String>> datos = new ArrayList<>();
-                                    List<String> names = new ArrayList<>();
-                                    List<String> descriptions = new ArrayList<>();
-                                    List<String> pr_counts = new ArrayList<>();
+                                //Ejecutamos en el hilo principal
 
-                                    for(MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes())
-                                    {
-                                        names.add(String.valueOf((String)entrada.name()));
-                                        descriptions.add(String.valueOf((String)entrada.description()) );
-                                        pr_counts.add(String.valueOf(entrada.pullRequests().totalCount()));
-                                        Log.d("elemento:",String.valueOf((String)entrada.description()) );
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        //Es necesario ejecutar las siguientes instrucciones en el hilo principal
+                                        //para que no exista una sobrecarga
+
+                                        ArrayAdapter<String> adapter;
+                                        List<List<String>> datos = new ArrayList<>();
+                                        List<String> names = new ArrayList<>();
+                                        List<String> descriptions = new ArrayList<>();
+                                        List<String> pr_counts = new ArrayList<>();
+
+                                        for (MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes()) {
+                                            names.add(String.valueOf((String) entrada.name()));
+                                            descriptions.add(String.valueOf((String) entrada.description()));
+                                            pr_counts.add(String.valueOf(entrada.pullRequests().totalCount()));
+                                            Log.d("elemento:", String.valueOf((String) entrada.description()));
+                                        }
+
+
+                                        datos.add(names);
+                                        datos.add(descriptions);
+                                        datos.add(pr_counts);
+
+
+                                        listview2.setAdapter(new Adaptador(MainActivity.this, datos, content));
                                     }
-
-
-                                    datos.add(names);
-                                    datos.add(descriptions);
-                                    datos.add(pr_counts);
-
-
-                                    listview2.setAdapter(new Adaptador(MainActivity.this,datos,content));
-                                }
-                            });
-
+                                });
+                            }
 
 
                         }
 
                         @Override
                         public void onFailure(@NotNull ApolloException e) {
-                            Log.d("ERROR:","La consulta no ha devuelto informacion");
+                            Log.d("ERROR:","La consulta no ha devuelto informacion2");
+                            MainActivity.this.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //Es necesario ejecutar las siguientes instrucciones en el hilo principal
+                                    //para que no exista una sobrecarga
+                                    Toast.makeText(MainActivity.this,"La clave para consultar al API no es correcta",
+                                            Toast.LENGTH_LONG).show();
+                                }
+                            });
+
                         }
 
                     });
