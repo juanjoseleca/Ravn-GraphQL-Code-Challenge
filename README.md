@@ -28,16 +28,29 @@ The main interface consists of a navigation bar, a text editor and a list view w
 ## Running the application
 
 ```
-Inicialmente
+When starting the application, it will show us the main interface where we can search for repositories by user.
 ```
+
 <img src="/images/1.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+Before performing a search we must enter our Github api key
+```
+
+<img src="/images/6.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+Before performing a search we must enter our Github api key
+```
+
+<img src="/images/7.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
 <img src="/images/2.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/3.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/4.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 <img src="/images/5.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
-<img src="/images/6.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
-<img src="/images/7.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
-<img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
 
 
 ## Restrictions
