@@ -34,21 +34,42 @@ When starting the application, it will show us the main interface where we can s
 <img src="/images/1.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 
 ```
-Before performing a search we must enter our Github api key
+Before performing a search, we must enter our Github API key, so we go to the navigation bar and click on 'API key'.
 ```
 
 <img src="/images/6.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 
 ```
-Before performing a search we must enter our Github api key
+Then we click on the image, which redirects us to the site where we can get our api key
+```
+
+<img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+Finally we enter the password in the text editor and click on 'Guardar'
 ```
 
 <img src="/images/7.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
-<img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+We go to the navigation bar and click on 'busqueda', then enter in the text editor the username we are looking for.
+```
 
 <img src="/images/2.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+After entering the name we click on the enter key.
+```
+
 <img src="/images/3.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+```
+The repositories of this user will be shown, and we can click on one of them to obtain the collaborators
+```
+
 <img src="/images/4.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+
+
 <img src="/images/5.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 
 
