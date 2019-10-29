@@ -6,6 +6,7 @@ To get started with the Android integration, go to [Apollo GraphQL Client for An
 1. Java 8
 2. Node.js(12.3.0)(npm)
 3. Curl 7.58.0
+4. GitHub API Key
 
 
 ### Installing
