@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.squareup.picasso.Picasso;
 import java.util.List;
 
@@ -24,19 +23,20 @@ public class Adaptador_contributors extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final View vista = inflater.inflate(R.layout.elemento_contributors,null);
+        //Declaramos las variables para obtener los ids---------
         TextView name = (TextView) vista.findViewById(R.id.name_id);
         TextView location = (TextView) vista.findViewById(R.id.location_id);
         TextView login = (TextView) vista.findViewById(R.id.login_id);
         ImageView imagen_usuario = (ImageView) vista.findViewById(R.id.imagen_id);
-
-        //TextView commits_count = (TextView) vista.findViewById(R.id.login_id);
+        //-------------------------------------------------------
+        //mostramos los datos en los 'TextView'----------
         name.setText(datos.get(0).get(position));
         location.setText(datos.get(1).get(position));
         login.setText(datos.get(2).get(position));
+        //-----------------------------------------------
 
-
+        //Cargamos la imagen utilizando la libreria 'Picasso'
         Picasso.get().load("https://avatars1.githubusercontent.com/u/8674244?v=4").into(imagen_usuario);
-
         return vista;
     }
     @Override

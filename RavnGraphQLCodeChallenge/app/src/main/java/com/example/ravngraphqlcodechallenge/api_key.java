@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.EditText;
 import java.io.OutputStreamWriter;
 import java.io.IOException;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import android.widget.Button;
 import android.view.View.OnClickListener;
@@ -26,19 +25,24 @@ public class api_key extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_api_key);
+        //Declaramos las variables para obtener los ids---------
         BottomNavigationView menu_navegacion = findViewById(R.id.navegador_id);
         menu_navegacion.setSelectedItemId(R.id.action_key);
         menu_navegacion.setOnNavigationItemSelectedListener(navListener);
-
         EditText clave = (EditText) findViewById(R.id.clave_id);
-
         Button clickButton = (Button) findViewById(R.id.guardar_id);
-        clickButton.setOnClickListener( new OnClickListener() {
+        ImageView img = (ImageView) findViewById(R.id.imagen_id);
+        //------------------------------------------------------
 
+        //Esta funcion se ejecuta cuando hacemos clic en 'Guardar'
+        //La cual nos permite escribir en un archivo la clave para posteriormente leerla
+        clickButton.setOnClickListener( new OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Obtenemos el valor del editor de texto
                 String s_clave = clave.getText().toString();
                 try {
+                    //Escribimos en el archivo el string 's_clave'
                     OutputStreamWriter outputStreamWriter = new OutputStreamWriter(api_key.this.openFileOutput("config.txt", Context.MODE_PRIVATE));
                     outputStreamWriter.write(s_clave);
                     outputStreamWriter.close();
@@ -50,11 +54,11 @@ public class api_key extends AppCompatActivity {
                     Toast.makeText(api_key.this,"La clave no se ha guardado correctamente",
                             Toast.LENGTH_LONG).show();
                 }
-
-
             }
         });
-        ImageView img = (ImageView) findViewById(R.id.imagen_id);
+
+        //Esta funcion se activa al hacer clic en la imagen(icono de Github)
+        //el cual nos redirige a una pagina donde obtendremos el API Key
         img.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
                 Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/settings/tokens"));
@@ -63,6 +67,8 @@ public class api_key extends AppCompatActivity {
         });
 
     }
+
+    //Esta funcion se ejecuta cuando hacemos clic en algun boton de la barra de navegacion
 
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {

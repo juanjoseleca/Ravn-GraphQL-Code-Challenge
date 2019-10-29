@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnKeyListener;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import com.apollographql.apollo.ApolloCall;
@@ -28,21 +28,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Declaramos las variables para obtener las ids---------
+        //Declaramos las variables para obtener los ids---------
 
         EditText search_editText = (EditText) findViewById(R.id.search_editText); //id del buscador
         ListView listview2=(ListView) findViewById(R.id.list_repositorios); //id del listado
-        String[][] datos = {
-                {"name1","description1","count1"},
-                {"name2","description2","count2"}
-        };
+
         //-------------------------------------------------------
-
-        //listview2.setAdapter(new Adaptador(this,datos));
-
-
         BottomNavigationView menu_navegacion = findViewById(R.id.navegador_id);
         menu_navegacion.setOnNavigationItemSelectedListener(navListener);
+
+        //Esta funcion detecta cuando apretamos una tecla:
 
         search_editText.setOnKeyListener(new OnKeyListener() {
             public boolean onKey(View view, int keyCode, KeyEvent keyevent) {
@@ -50,21 +45,26 @@ public class MainActivity extends AppCompatActivity {
 
                 if ((keyevent.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     String content = search_editText.getText().toString();
+
                     //Realizamos la consulta mediante apollo al api de Github
+
                     MyApolloClient.getMyApolloClient(MainActivity.this).query(MiRepoQuery.builder().midato(content).build()).httpCachePolicy(HttpCachePolicy.NETWORK_FIRST).enqueue(new ApolloCall.Callback<MiRepoQuery.Data>() {
+
                         @Override
                         public void onResponse(@NotNull Response<MiRepoQuery.Data> response) {
-                            if(response.data().repositoryOwner().repositories().nodes()==null)
+                            if(response.data().repositoryOwner()==null)
                             {
-                                Toast.makeText(MainActivity.this,"No existe un usuario con dicho nombre",
-                                        Toast.LENGTH_LONG).show();
+                                MainActivity.this.runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(MainActivity.this,"No existe un usuario con dicho nombre",
+                                                Toast.LENGTH_LONG).show();
+                                    }
+                                });
                             }
                             else {
-
-
                                 //En caso obtengamos datos en nuestra consulta al api se ejecutara lo siguiente
-
-                                //Ejecutamos en el hilo principal
+                                //En el hilo principal
 
                                 MainActivity.this.runOnUiThread(new Runnable() {
                                     @Override
@@ -72,26 +72,49 @@ public class MainActivity extends AppCompatActivity {
                                         //Es necesario ejecutar las siguientes instrucciones en el hilo principal
                                         //para que no exista una sobrecarga
 
-                                        ArrayAdapter<String> adapter;
-                                        List<List<String>> datos = new ArrayList<>();
-                                        List<String> names = new ArrayList<>();
-                                        List<String> descriptions = new ArrayList<>();
-                                        List<String> pr_counts = new ArrayList<>();
+                                        //obtenemos los datos de consulta, llamando a la siguiente funcion
+                                        List<List<String>>datos = obtener_datos_de_consulta(response);
 
-                                        for (MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes()) {
-                                            names.add(String.valueOf((String) entrada.name()));
-                                            descriptions.add(String.valueOf((String) entrada.description()));
-                                            pr_counts.add(String.valueOf(entrada.pullRequests().totalCount()));
-                                            Log.d("elemento:", String.valueOf((String) entrada.description()));
-                                        }
-
-
-                                        datos.add(names);
-                                        datos.add(descriptions);
-                                        datos.add(pr_counts);
-
+                                        //Enviamos nuestra variable 'datos' y ejecutamos el siguiente 'Adapter'
 
                                         listview2.setAdapter(new Adaptador(MainActivity.this, datos, content));
+
+                                        //Detectamos cuando exista un clic en algun elemento
+
+                                        listview2.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                                            @Override
+                                            public void onItemClick(AdapterView<?>parent,View view,int position,long id)
+                                            {
+                                                Log.d("ACTIVIDAD","clic en item");
+                                                Intent show_contributors = new Intent(MainActivity.this,topcontributors.class);
+                                                show_contributors.putExtra("NOMBRE_USUARIO",search_editText.getText().toString() );
+                                                show_contributors.putExtra("REPOSITORIO",datos.get(0).get(position));
+                                                MyApolloClient.getMyApolloClient(MainActivity.this).query(Get_collaboratorsQuery.builder().midato(search_editText.getText().toString()).repository(datos.get(0).get(position)).build()).enqueue(new ApolloCall.Callback<Get_collaboratorsQuery.Data>() {
+                                                    @Override
+                                                    public void onResponse(@NotNull Response<Get_collaboratorsQuery.Data> response) {
+                                                        //En caso obtengamos datos en nuestra consulta al api, se ejecutara lo siguiente:
+
+                                                        if(response.data().repositoryOwner().repository().collaborators()==null)
+                                                        {
+                                                            Log.d("ERROR","La consulta es nula");
+                                                            Intent show_contributors = new Intent(MainActivity.this,Cuenta_privada.class);
+                                                            MainActivity.this.startActivity(show_contributors);
+                                                        }
+                                                        else
+                                                        {
+                                                            MainActivity.this.startActivity(show_contributors);
+                                                        }
+                                                    }
+                                                    @Override
+                                                    public void onFailure(@NotNull ApolloException e) {
+                                                        Log.d("ERROR:","La consulta no ha devuelto informacion");
+                                                    }
+                                                });
+
+                                            }
+
+                                        });
+
                                     }
                                 });
                             }
@@ -123,6 +146,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Esta funcion se ejecuta cuando hacemos clic en algun boton de la barra de navegacion
+
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -134,9 +160,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.d("ACTIVIDAD","Se hizo click en action search");
                             break;
                         case R.id.action_key:
+                            Log.d("ACTIVIDAD","Se hizo click en action key");
                             Intent abrir_actividad_api_key = new Intent(MainActivity.this,api_key.class);
                             MainActivity.this.startActivity(abrir_actividad_api_key);
-                            Log.d("ACTIVIDAD","Se hizo click en action key");
                             break;
 
                     }
@@ -144,6 +170,29 @@ public class MainActivity extends AppCompatActivity {
                     return true;
                 }
             };
+    public List<List<String>> obtener_datos_de_consulta(Response<MiRepoQuery.Data> response)
+    {
+        //Creamos la estructura datos que contiene la informacion de la consulta
+        List<List<String>> datos = new ArrayList<>();
+        List<String> names = new ArrayList<>();
+        List<String> descriptions = new ArrayList<>();
+        List<String> pr_counts = new ArrayList<>();
+
+        //iteramos el 'Query' que obtuvimos mediante Apollo y GraphQl, y guardamos los datos
+        //en las listas (List<String>)
+
+        for (MiRepoQuery.Node entrada : response.data().repositoryOwner().repositories().nodes()) {
+            names.add(String.valueOf((String) entrada.name()));
+            descriptions.add(String.valueOf((String) entrada.description()));
+            pr_counts.add(String.valueOf(entrada.pullRequests().totalCount()));
+        }
+
+        //Insertamos nuestras listas en la estructura 'datos'
+        datos.add(names);
+        datos.add(descriptions);
+        datos.add(pr_counts);
+        return  datos;
+    }
 
 }
 

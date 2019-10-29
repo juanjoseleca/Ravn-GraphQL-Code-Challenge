@@ -2,23 +2,16 @@ package com.example.ravngraphqlcodechallenge;
 import com.apollographql.apollo.ApolloClient;
 import android.content.Context;
 import android.util.Log;
-
-import com.apollographql.apollo.api.cache.http.HttpCacheStore;
-import okhttp3.internal.cache.CacheInterceptor;
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.File;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.internal.cache.DiskLruCache;
 import com.apollographql.apollo.cache.http.DiskLruHttpCacheStore;
 import com.apollographql.apollo.cache.http.ApolloHttpCache;
-import okhttp3.internal.cache.InternalCache;
 
 public class MyApolloClient {
     private static final String BASE_URL = "https://api.github.com/graphql";
@@ -46,11 +39,7 @@ public class MyApolloClient {
                     return chain.proceed(builder.build());
                 }).build();
         File file = new File(contexto.getFilesDir(), "apolloCache");
-
-// Size in bytes of the cache
         int size = 1024*1024;
-
-// Create the http response cache store
         DiskLruHttpCacheStore cacheStore = new DiskLruHttpCacheStore(file, size);
 
         apolloClient = ApolloClient.builder()
