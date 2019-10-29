@@ -38,7 +38,14 @@ End with an example of getting some data out of the system or using it for a lit
 
 Explain how to run the automated tests for this system
 
-<img src="/images/1.jpeg" alt="3DPrinter" height="640" width="360" align="middle"> 
+<img src="/images/1.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/2.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/3.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/4.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/5.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/6.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/7.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
+<img src="/images/8.jpeg" alt="3DPrinter" height="320" width="180" align="middle"> 
 
 ### Break down into end to end tests
 
