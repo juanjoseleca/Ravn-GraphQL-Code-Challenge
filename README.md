@@ -26,6 +26,13 @@ until finished
 
 End with an example of getting some data out of the system or using it for a little demo
 
+## Functionalities
+1. Get a user's repositories.
+2. Get contributors from a repository.
+3. Save the results of the queries in cache to use them in offline mode.
+4. Set api key.
+
+
 ## Running the tests
 
 Explain how to run the automated tests for this system
@@ -46,9 +53,10 @@ Explain what these tests test and why
 Give an example
 ```
 
-## Deployment
+## Restriction
 
-Add additional notes about how to deploy this on a live system
+1. Github API v4 only allows you to see the collaborators of a repository, if it was created by the user who generates the API key.
+2. Its not possible get the URL of each user's avatar, when the query is made the api returns null.
 
 ## Built With
 
