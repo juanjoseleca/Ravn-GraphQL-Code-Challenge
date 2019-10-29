@@ -1,10 +1,12 @@
 # Ravn GraphQL Code Challenge
 Mobile application that allows searching Github repositories by user using GraphQL and Apollo.
 To get started with the Android integration, go to [Apollo GraphQL Client for Android and the JVM](https://github.com/apollographql/apollo-tooling#apollo-clientdownload-schema-output).
+
 ## Prerequisites
-1. Apollo 
-2. GraphQl 
-3. Android Studio
+1. Java 8
+2. Node.js(12.3.0)(npm)
+3. Curl 7.58.0
+
 
 ### Installing
 
